@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Deadline Board: app map</title>
+<style>
+body{margin:0;background:#0d0f12;color:#e8e6e1;font:16px/1.55 system-ui,sans-serif}main{max-width:900px;margin:0 auto;padding:24px 16px}
+h1{font:700 22px ui-monospace,Menlo,monospace;color:#ffb000;letter-spacing:.06em;text-transform:uppercase}h2{font-size:17px;margin-top:28px}
+code{font:14px ui-monospace,Menlo,monospace;color:#ffb000}.flow{display:grid;gap:8px;margin:16px 0}
+.step{background:#161a20;border:1px solid #2a3039;border-radius:10px;padding:12px 14px}.step b{display:block;font:700 13px ui-monospace,monospace;color:#8a8f98;text-transform:uppercase;letter-spacing:.08em}
+.arrow{text-align:center;color:#8a8f98}li{margin:4px 0}
+</style></head><body><main>
+<h1>Deadline Board: app map</h1>
+<p>One link in, five answers out, each with the line of the page it came from.</p>
+<h2>The read path</h2>
+<div class="flow">
+<div class="step"><b>Browser</b><code>public/app.js</code> <code>read()</code> calls <code>/api/read?url=...&amp;country=...</code></div><div class="arrow">↓</div>
+<div class="step"><b>Server</b><code>server.js</code> checks the country, limits reads per visitor, catches errors as plain messages</div><div class="arrow">↓</div>
+<div class="step"><b>Fetch</b><code>lib/read.js</code> <code>readCompetition()</code> fetches the page and, for Devpost, its <code>/rules</code> page through <code>lib/fetchpage.js</code> <code>fetchPage()</code> (public addresses only, 12 s, 4 MB)</div><div class="arrow">↓</div>
+<div class="step"><b>Read</b><code>lib/extract.js</code> <code>readPage()</code>: <code>findDeadline</code>, <code>findEligibility</code>, <code>findFee</code>, <code>findPrize</code>, <code>findRequirements</code>, <code>videoLimit</code></div><div class="arrow">↓</div>
+<div class="step"><b>Show</b><code>showTicket()</code> converts the deadline to your time with <code>Intl.DateTimeFormat</code>; <code>addCurrent()</code> saves to <code>localStorage</code>; <code>renderBoard()</code> sorts; <code>tick()</code> counts down every second</div>
+</div>
+<h2>Where to change things</h2>
+<ul>
+<li>A new time zone name: <code>ZONES</code> in <code>lib/extract.js</code></li>
+<li>A new country or its other names: <code>COUNTRY_NAMES</code></li>
+<li>Words that mark a deadline: <code>DEADLINE_WORDS</code>; headings for what to submit: <code>SUBMIT_HEAD</code></li>
+<li>Board columns and statuses: <code>renderBoard()</code> and <code>STATUSES</code> in <code>public/app.js</code></li>
+</ul>
+<h2>A practice to reuse</h2>
+<p>Every answer carries its evidence. When a tool reads documents for you, return the source line with each answer, so a person can trust it at a glance or catch a wrong one.</p>
+<h2>Tests</h2>
+<p><code>node --test tests/*.test.js</code>: the reading rules, the fetcher's address and size checks, and the server end to end.</p>
+</main></body></html>
