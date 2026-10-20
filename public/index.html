@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deadline Board</title>
+<meta name="description" content="Paste a competition link. Get the deadline in your time, whether you can enter, the fee and what to hand in.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="flaps" aria-hidden="true"><i>D</i><i>B</i></span>
+    <div>
+      <h1>Deadline Board</h1>
+      <p class="tag">Every competition you're entering, by what closes first.</p>
+    </div>
+  </div>
+  <label class="from">Entering from
+    <select id="country"></select>
+  </label>
+</header>
+
+<main>
+  <form id="read" class="paste" autocomplete="off">
+    <label for="link" class="sr">Competition link</label>
+    <input id="link" type="url" inputmode="url" placeholder="Paste a hackathon, contest or grant link" required>
+    <button type="submit" id="go">Read it</button>
+  </form>
+  <p class="hint" id="hint">Try <button type="button" class="linkish" data-sample="https://learn-ai-basics.devpost.com/">learn-ai-basics.devpost.com</button></p>
+  <p class="error" id="error" role="alert" hidden></p>
+
+  <section id="ticket" class="ticket" hidden aria-live="polite"></section>
+
+  <section class="board" aria-labelledby="boardtitle">
+    <div class="boardhead">
+      <h2 id="boardtitle">Departures</h2>
+      <span class="now" id="clock"></span>
+    </div>
+    <div class="cols" aria-hidden="true">
+      <span>Closes (your time)</span><span>Time left</span><span>Competition</span><span>Prize</span><span>Entry</span><span>Status</span><span></span>
+    </div>
+    <ol id="rows" class="rows"></ol>
+    <p id="empty" class="empty">Nothing on the board yet. Paste a link above and add it.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Answers are read from the competition's own pages and quoted, so you can check them. Your board stays in this browser.</p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
